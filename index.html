@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            background: radial-gradient(circle, #ff758c, #ff7eb3);
+            color: white;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h1 {
+            font-size: 40px;
+            margin-top: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .container { margin-top: 40px; }
+
+        button {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(255, 65, 108, 0.5);
+            margin: 15px;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 65, 108, 0.7);
+        }
+
+        .message-box {
+            display: none;
+            font-size: 22px;
+            padding: 15px;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .typing {
+            font-family: 'Courier New', monospace;
+            font-size: 22px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid white;
+        }
+
+        .love-meter {
+            font-size: 26px;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        #meter {
+            width: 100%;
+            height: 30px;
+            background: #ddd;
+            border-radius: 20px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        #meter-bar {
+            height: 100%;
+            width: 0;
+            background: #ff4b2b;
+            border-radius: 20px;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: floatStar 6s infinite;
+        }
+
+        @keyframes floatStar {
+            0% { transform: translateY(-100vh) translateX(100vw); opacity: 0.5; }
+            50% { transform: translateY(100vh) translateX(50vw); opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(0vw); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>For You, Beautiful ❤️</h1>
+    <p>I made this to remind you how special you are!</p>
+
+    <div class="container">
+        <button onclick="showMessage()">Click for a Surprise!</button>
+        <div id="hiddenMsg" class="message-box">You are one of a kind, and I appreciate you more than you know! 🌹</div>
+
+        <button id="reasonBtn" onclick="startReasons()">Click to see why I like you!</button>
+        <div id="reason" class="message-box typing"></div>
+
+        <button id="loveBtn" onclick="startGuessing()" style="display: none;">How much do I like you?</button>
+        <div id="guessInput" class="message-box" style="display: none;">
+            <input type="number" id="guess" placeholder="Guess the percentage (1-100)" style="padding: 8px; font-size: 18px; width: 200px;">
+            <button onclick="checkGuess()">Guess</button>
+            <p id="guessMessage"></p>
+            <div id="meter"><div id="meter-bar"></div></div>
+        </div>
+        <div id="loveResult" class="love-meter"></div>
+    </div>
+
+    <script>
+        function showMessage() {
+            document.getElementById('hiddenMsg').style.display = 'block';
+        }
+
+        let reasons = [
+            "I love how authentic and real you are.",
+            "You have this ability to make me feel completely relaxed.",
+            "I'm always amazed by the way you think and your perspective on things.",
+            "Every second spent with you feels enchanting.",
+            "You leave such a lasting impression, you're truly remarkable.",
+            "Your calming presence is something I always cherish being around."
+        ];
+        let shownReasons = 0;
+
+        function startReasons() {
+            document.getElementById("reasonBtn").style.display = "none";
+            document.getElementById("loveBtn").style.display = "inline-block";
+            showNextReason();
+        }
+
+        function showNextReason() {
+            if (shownReasons < reasons.length) {
+                let reasonText = reasons[shownReasons];
+                let reasonElement = document.getElementById("reason");
+
+                reasonElement.innerHTML = "";
+                reasonElement.style.display = "block";
+                let i = 0;
+
+                function typeEffect() {
+                    if (i < reasonText.length) {
+                        reasonElement.innerHTML += reasonText.charAt(i);
+                        i++;
+                        setTimeout(typeEffect, 70);
+                    } else {
+                        shownReasons++;
+                        setTimeout(showNextReason, 2000);  // Show next reason after 2 seconds
+                    }
+                }
+                typeEffect();
+            }
+        }
+
+        function startGuessing() {
+            document.getElementById("guessInput").style.display = "block";
+        }
+
+        function checkGuess() {
+            let guess = document.getElementById("guess").value;
+            let message = document.getElementById("guessMessage");
+            let meterBar = document.getElementById("meter-bar");
+
+            if (guess < 100) {
+                meterBar.style.width = guess + "%";
+                meterBar.innerText = guess + "%";
+                message.innerText = "mxm ke go rata ga 100.";
+            } else if (guess == 100) {
+                meterBar.style.width = "100%";
+                meterBar.innerText = "100% 💖";
+                message.innerText = "You got it! 💐 Here's some flowers just for you!";
+                showFlowers();
+            }
+        }
+
+        function showFlowers() {
+            let flowerEmoji = "🌸🌺🌷💐";
+            document.getElementById("loveResult").innerText = flowerEmoji;
+            document.getElementById("loveResult").style.display = "block";
+        }
+
+        function createStar() {
+            let star = document.createElement("div");
+            star.className = "star";
+            star.style.left = Math.random() * 100 + "vw";
+            star.style.animationDuration = Math.random() * 5 + 5 + "s";
+            document.body.appendChild(star);
+            setTimeout(() => { star.remove(); }, 6000);
+        }
+        setInterval(createStar, 100);
+
+    </script>
+
+</body>
+</html>
